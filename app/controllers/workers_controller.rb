@@ -4,7 +4,7 @@ class WorkersController < ApplicationController
 
   # GET /workers
   def index
-    @workers = Worker.all
+    @workers = Worker.limit(params[:limit]).offset(params[:offset])
     render json: @workers, status: :ok
   end
 
@@ -17,7 +17,7 @@ class WorkersController < ApplicationController
   def create
     @worker = Worker.new(worker_params)
     if @worker.save
-      render json: @worker, status: :created
+      render json: { worker: @worker, total: Worker.count }, status: :created
     else
       render json: { errors: @worker.errors.full_messages },
              status: :unprocessable_entity
