@@ -5,6 +5,7 @@ class Reservation < ApplicationRecord
   belongs_to :block_time
   belongs_to :work_day
   belongs_to :worker
+  belongs_to :service
 
   validates_with RutValidator
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }

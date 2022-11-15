@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_17_184121) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_17_184123) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,10 +34,20 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_17_184121) do
     t.bigint "work_day_id", null: false
     t.bigint "block_time_id", null: false
     t.bigint "worker_id", null: false
+    t.bigint "service_id", null: false
     t.index ["block_time_id"], name: "index_reservations_on_block_time_id"
+    t.index ["service_id"], name: "index_reservations_on_service_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
     t.index ["work_day_id"], name: "index_reservations_on_work_day_id"
     t.index ["worker_id"], name: "index_reservations_on_worker_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -85,6 +95,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_17_184121) do
   end
 
   add_foreign_key "reservations", "block_times"
+  add_foreign_key "reservations", "services"
   add_foreign_key "reservations", "users"
   add_foreign_key "reservations", "work_days"
   add_foreign_key "reservations", "workers"
