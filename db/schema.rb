@@ -10,15 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_15_210944) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_17_184121) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "block_times", force: :cascade do |t|
+    t.time "start"
+    t.time "end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.string "firstname"
+    t.string "lastname"
+    t.string "phone"
+    t.datetime "day"
+    t.string "rut"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "work_day_id", null: false
+    t.bigint "block_time_id", null: false
+    t.bigint "worker_id", null: false
+    t.index ["block_time_id"], name: "index_reservations_on_block_time_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
+    t.index ["work_day_id"], name: "index_reservations_on_work_day_id"
+    t.index ["worker_id"], name: "index_reservations_on_worker_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "username"
     t.string "email"
     t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "work_days", force: :cascade do |t|
+    t.string "name"
+    t.integer "day_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -30,6 +63,33 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_15_210944) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+    t.string "phone"
   end
 
+  create_table "working_days", force: :cascade do |t|
+    t.bigint "worker_id", null: false
+    t.bigint "work_day_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["work_day_id"], name: "index_working_days_on_work_day_id"
+    t.index ["worker_id"], name: "index_working_days_on_worker_id"
+  end
+
+  create_table "working_hours", force: :cascade do |t|
+    t.bigint "worker_id", null: false
+    t.bigint "block_time_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["block_time_id"], name: "index_working_hours_on_block_time_id"
+    t.index ["worker_id"], name: "index_working_hours_on_worker_id"
+  end
+
+  add_foreign_key "reservations", "block_times"
+  add_foreign_key "reservations", "users"
+  add_foreign_key "reservations", "work_days"
+  add_foreign_key "reservations", "workers"
+  add_foreign_key "working_days", "work_days"
+  add_foreign_key "working_days", "workers"
+  add_foreign_key "working_hours", "block_times"
+  add_foreign_key "working_hours", "workers"
 end

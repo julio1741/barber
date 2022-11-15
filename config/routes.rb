@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   resources :workers, only: [:create, :index, :update, :destroy, :show]
+  resources :reservations, only: [:create, :index, :update, :destroy, :show]
+  resources :block_times, only: [:create, :index, :update, :destroy, :show]
+  resources :work_days, only: [:create, :index, :update, :destroy, :show]
 
   resources :users, param: :_username
   post '/auth/login', to: 'authentication#login'

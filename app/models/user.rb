@@ -8,4 +8,6 @@ class User < ApplicationRecord
             if: -> { new_record? || !password.nil? }
   validates :password_confirmation, presence: true
   validates :password, confirmation: {case_sensitive: true}
+
+  has_many :reservations
 end
