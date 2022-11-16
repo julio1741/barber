@@ -5,7 +5,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations or /reservations.json
   def index
-    @reservations = Reservation.actives
+    @reservations = Reservation.actives.limit(params[:limit]).offset(params[:offset])
     render json: @reservations, status: :ok
   end
 

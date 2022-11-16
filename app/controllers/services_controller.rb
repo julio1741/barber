@@ -3,7 +3,7 @@ class ServicesController < ApplicationController
 
   # GET /services
   def index
-    @services = Service.all
+    @services = Service.limit(params[:limit]).offset(params[:offset])
 
     render json: @services
   end
