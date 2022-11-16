@@ -13,6 +13,12 @@ class WorkersController < ApplicationController
     render json: @worker, status: :ok
   end
 
+  def available_hours
+    day = params[:day]
+    @block_times, @work_day = worker_availability(day, @worker)
+    render json: {block_times: @block_times, work_day: @work_day}, status: :ok
+  end
+
   # POST /workers
   def create
     @worker = Worker.new(worker_params)

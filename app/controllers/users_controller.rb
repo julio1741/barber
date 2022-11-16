@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
+    @users = User.limit(params[:limit]).offset(params[:offset])
     render json: @users, status: :ok
   end
 
