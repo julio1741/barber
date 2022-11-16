@@ -7,7 +7,7 @@ class Reservation < ApplicationRecord
   belongs_to :worker
   belongs_to :service
 
-  validates_with RutValidator
+  #validates_with RutValidator
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :firstname, presence: true
   validates :rut, presence: true
@@ -24,9 +24,9 @@ class Reservation < ApplicationRecord
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :actives, -> { where('day > ?', Time.zone.now) }
 
-  after_create :send_email
+  #after_create :send_email
 
-  def send_email
-    ReservationMailer.with(reservation: self).success.deliver_now
-  end
+  #def send_email
+    #ReservationMailer.with(reservation: self).success.deliver_now
+  #end
 end

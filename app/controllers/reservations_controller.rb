@@ -17,14 +17,11 @@ class ReservationsController < ApplicationController
   # POST /reservations or /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-
-    respond_to do |format|
-      @reservation.validate
-      if @reservation.save
-        format.json { render :show, status: :created, location: @reservation }
-      else
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
-      end
+    #@reservation.validate
+    if @reservation.save
+      render json: @reservation, status: :created
+    else
+      render json: @reservation.errors, status: :unprocessable_entity
     end
   end
 
@@ -33,9 +30,9 @@ class ReservationsController < ApplicationController
     respond_to do |format|
       @reservation.validate
       if @reservation.update(reservation_params)
-        format.json { render :show, status: :ok, location: @reservation }
+        render json: @reservation, status: :created
       else
-        format.json { render json: @reservation.errors, status: :unprocessable_entity }
+        render json: @reservation.errors, status: :unprocessable_entity
       end
     end
   end
@@ -43,9 +40,7 @@ class ReservationsController < ApplicationController
   # DELETE /reservations/1 or /reservations/1.json
   def destroy
     @reservation.destroy
-    respond_to do |format|
-      format.json { head :no_content }
-    end
+    render json: { }
   end
 
   private
@@ -58,7 +53,7 @@ class ReservationsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def reservation_params
     params.require(:reservation).permit(:firstname, :lastname, :phone, :day, :rut, :email,
-                                        :block_time_id, :user_id, :work_day_id, :worker_id)
+                                        :block_time_id, :user_id, :work_day_id, :worker_id, :service_id)
   end
 
 end
