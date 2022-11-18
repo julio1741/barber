@@ -16,7 +16,7 @@ class WorkersController < ApplicationController
   def available_hours
     day = params[:day]
     @block_times, @work_day = worker_availability(day, @worker)
-    render json: {block_times: @block_times, work_day: @work_day}, status: :ok
+    render json: {block_times: @block_times.sort_by(&:id).sort_by(&:start), work_day: @work_day}, status: :ok
   end
 
   # POST /workers
