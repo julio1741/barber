@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :workers, only: [:create, :index, :update, :destroy, :show] do
     collection do
-      get 'available_hours', action: :available_hours, as: :available_hours
+      post 'available_hours', action: :available_hours, as: :available_hours
     end
   end
   resources :reservations, only: [:create, :index, :update, :destroy, :show]
