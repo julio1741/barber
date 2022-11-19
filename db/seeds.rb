@@ -97,3 +97,5 @@ worker4.block_times << block_time10
 worker4.block_times << block_time9
 
 
+AdminUser.create!(email: 'julio1741@gmail.com', password: '12345678', password_confirmation: '12345678') 
+AdminUser.create!(email: 'roqueheliarenas@gmail.com', password: '12345678', password_confirmation: '12345678')

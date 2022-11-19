@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BlockTimesController < ApplicationController
+class BlockTimesController < ApiController
   before_action :set_block_time, only: %i[show update destroy]
 
   # GET /block_times or /block_times.json
