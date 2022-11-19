@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReservationsController < ApplicationController
+class ReservationsController < ApiController
   before_action :set_reservation, only: %i[show update destroy]
 
   # GET /reservations or /reservations.json

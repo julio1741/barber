@@ -53,3 +53,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'rack-cors'
 gem 'chilean_rut'
+gem 'devise'
+gem 'activeadmin'
+gem 'sprockets'
+gem 'sass-rails'

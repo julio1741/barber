@@ -1,4 +1,4 @@
-class WorkersController < ApplicationController
+class WorkersController < ApiController
 
   before_action :find_worker, except: %i[create index]
 
