@@ -11,7 +11,11 @@ Rails.application.routes.draw do
       post 'available_hours', action: :available_hours, as: :available_hours
     end
   end
-  resources :reservations, only: [:create, :index, :update, :destroy, :show]
+  resources :reservations, only: [:create, :index, :update, :destroy, :show] do
+    collection do
+      get 'by_user/:user_id', action: :by_user, as: :by_user
+    end
+  end
   resources :block_times, only: [:create, :index, :update, :destroy, :show]
   resources :work_days, only: [:create, :index, :update, :destroy, :show]
   resources :services

@@ -5,13 +5,19 @@ class ReservationsController < ApiController
 
   # GET /reservations or /reservations.json
   def index
-    @reservations = Reservation.actives.limit(params[:limit]).offset(params[:offset])
+    @reservations = Reservation.limit(params[:limit]).offset(params[:offset])
     render json: @reservations, status: :ok
   end
 
   # GET /reservations/1 or /reservations/1.json
   def show
     render json: @reservation, status: :ok
+  end
+
+  # GET /reservations/1 or /reservations/1.json
+  def by_user
+    @reservations = Reservation.by_user(by_user_params[:user_id])
+    render json: @reservations, status: :ok
   end
 
   # POST /reservations or /reservations.json
@@ -54,6 +60,10 @@ class ReservationsController < ApiController
   def reservation_params
     params.require(:reservation).permit(:firstname, :lastname, :phone, :day, :rut, :email,
                                         :block_time_id, :user_id, :work_day_id, :worker_id, :service_id)
+  end
+
+  def by_user_params
+    params.permit(:user_id)
   end
 
 end
