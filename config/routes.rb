@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
@@ -16,6 +18,6 @@ Rails.application.routes.draw do
 
   resources :users, param: :_username
   post '/auth/login', to: 'authentication#login'
-  get '/*a', to: 'application#not_found'
+  get '/*a', to: 'api#not_found'
 
 end
