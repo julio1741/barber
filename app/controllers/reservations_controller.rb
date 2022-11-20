@@ -17,7 +17,6 @@ class ReservationsController < ApiController
   # GET /reservations/1 or /reservations/1.json
   def by_user
     @reservations = Reservation.by_user(by_user_params[:user_id])
-    render json: @reservations, status: :ok
   end
 
   # POST /reservations or /reservations.json
