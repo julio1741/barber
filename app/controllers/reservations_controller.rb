@@ -18,14 +18,14 @@ class ReservationsController < ApiController
   def by_user
     @reservations = Reservation.by_user(by_user_params[:user_id]).order(day: :desc)
     now = Time.now
-    @old_reservations = @reservations.where("reservations.day <= ? ", now)
-    @current_reservations = @reservations.where("reservations.day > ? ", now)
+    @old_reservations = @reservations.where("reservations.day < ?", now)
+    @current_reservations = @reservations.where("reservations.day >= ? ", now)
   end
 
   # POST /reservations or /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-    #@reservation.validate
+    @reservation.change_day_time
     if @reservation.save
       render json: @reservation, status: :created
     else
@@ -36,7 +36,6 @@ class ReservationsController < ApiController
   # PATCH/PUT /reservations/1 or /reservations/1.json
   def update
     respond_to do |format|
-      @reservation.validate
       if @reservation.update(reservation_params)
         render json: @reservation, status: :created
       else
