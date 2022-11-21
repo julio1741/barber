@@ -17,6 +17,9 @@ class ReservationsController < ApiController
   # GET /reservations/1 or /reservations/1.json
   def by_user
     @reservations = Reservation.by_user(by_user_params[:user_id])
+    now = Time.now
+    @old_reservations = @reservations.where("reservations.created_at <= ? ", now)
+    @current_reservations = @reservations.where("reservations.created_at > ? ", now)
   end
 
   # POST /reservations or /reservations.json
