@@ -36,6 +36,7 @@ class ReservationsController < ApiController
   # PATCH/PUT /reservations/1 or /reservations/1.json
   def update
     if @reservation.update(reservation_params)
+      @reservation.change_day_time
       render json: @reservation, status: :created
     else
       render json: @reservation.errors, status: :unprocessable_entity
