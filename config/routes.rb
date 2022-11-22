@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
   resources :reservations, only: [:create, :index, :update, :destroy, :show] do
     collection do
-      get 'by_user/', action: :by_user, as: :by_user
+      post 'by_user/', action: :by_user, as: :by_user
     end
   end
   resources :block_times, only: [:create, :index, :update, :destroy, :show]
