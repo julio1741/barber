@@ -16,7 +16,7 @@ class ReservationsController < ApiController
 
   # GET /reservations/1 or /reservations/1.json
   def by_user
-    @reservations = Reservation.by_user(by_user_params[:user_id]).order(day: :desc)
+    @reservations = Reservation.where(email: by_user_params[:email]).order(day: :desc)
     now = Time.now
     @old_reservations = @reservations.where("reservations.day < ?", now)
     @current_reservations = @reservations.where("reservations.day >= ? ", now).order(day: :desc).sort_by(&:day)
@@ -63,7 +63,7 @@ class ReservationsController < ApiController
   end
 
   def by_user_params
-    params.permit(:user_id)
+    params.permit(:user_id, :email)
   end
 
 end

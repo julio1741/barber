@@ -4,11 +4,13 @@ json.array! reservations do |reservation|
   json.day reservation.day
 
   user = reservation.user
-  json.user do
-    json.id user.id
-    json.name user.name
-    json.phone user.phone
-    json.email user.email
+  if user
+    json.user do
+      json.id user.id
+      json.name user.name
+      json.phone user.phone
+      json.email user.email
+    end
   end
 
   worker = reservation.worker
