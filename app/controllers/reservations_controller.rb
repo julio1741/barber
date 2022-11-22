@@ -19,7 +19,7 @@ class ReservationsController < ApiController
     @reservations = Reservation.by_user(by_user_params[:user_id]).order(day: :desc)
     now = Time.now
     @old_reservations = @reservations.where("reservations.day < ?", now)
-    @current_reservations = @reservations.where("reservations.day >= ? ", now).sort_by(&:day)
+    @current_reservations = @reservations.where("reservations.day >= ? ", now).sort_by(&:day).reverse
   end
 
   # POST /reservations or /reservations.json
@@ -35,8 +35,8 @@ class ReservationsController < ApiController
 
   # PATCH/PUT /reservations/1 or /reservations/1.json
   def update
-      @reservation.change_day_time
     if @reservation.update(reservation_params)
+      @reservation.reload.change_day_time
       render json: @reservation, status: :created
     else
       render json: @reservation.errors, status: :unprocessable_entity

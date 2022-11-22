@@ -30,6 +30,7 @@ class Reservation < ApplicationRecord
     start_time_minutes = datetime_block_time.min
     start_time_seconds = datetime_block_time.second
     self.day = self.day.change({ hour: start_time_hour, min: start_time_minutes, sec: start_time_seconds })
+    save unless self.new_record?
   end
   #after_create :send_email
 
