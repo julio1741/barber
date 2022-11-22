@@ -24,4 +24,12 @@ Rails.application.routes.draw do
   post '/auth/login', to: 'authentication#login'
   get '/*a', to: 'api#not_found'
 
+  namespace :guest do
+    resources :reservations, controller: '/guest_reservations', only: [:create, :update, :index] do
+      collection do
+        get 'by_user/:user_id', action: :by_user, as: :by_user
+      end
+    end
+  end
+
 end
