@@ -19,7 +19,7 @@ class ReservationsController < ApiController
     @reservations = Reservation.by_user(by_user_params[:user_id]).order(day: :desc)
     now = Time.now
     @old_reservations = @reservations.where("reservations.day < ?", now)
-    @current_reservations = @reservations.where("reservations.day >= ? ", now)
+    @current_reservations = @reservations.where("reservations.day >= ? ", now).order(day: :asc)
   end
 
   # POST /reservations or /reservations.json
