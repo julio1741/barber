@@ -35,12 +35,10 @@ class ReservationsController < ApiController
 
   # PATCH/PUT /reservations/1 or /reservations/1.json
   def update
-    respond_to do |format|
-      if @reservation.update(reservation_params)
-        render json: @reservation, status: :created
-      else
-        render json: @reservation.errors, status: :unprocessable_entity
-      end
+    if @reservation.update(reservation_params)
+      render json: @reservation, status: :created
+    else
+      render json: @reservation.errors, status: :unprocessable_entity
     end
   end
 
