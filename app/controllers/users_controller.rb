@@ -8,7 +8,7 @@ class UsersController < ApiController
     render json: @users, status: :ok
   end
 
-  # GET /users/{username}
+  # GET /users/{id}
   def show
     render json: @user, status: :ok
   end
@@ -24,7 +24,7 @@ class UsersController < ApiController
     end
   end
 
-  # PUT /users/{username}
+  # PUT /users/{id}
   def update
     unless @user.update(user_params)
       render json: { errors: @user.errors.full_messages },
@@ -32,7 +32,7 @@ class UsersController < ApiController
     end
   end
 
-  # DELETE /users/{username}
+  # DELETE /users/{id}
   def destroy
     @user.destroy
   end
@@ -40,7 +40,7 @@ class UsersController < ApiController
   private
 
   def find_user
-    @user = User.find_by_username!(params[:_username])
+    @user = User.find_by!(id: params[:id])
     rescue ActiveRecord::RecordNotFound
       render json: { errors: 'User not found' }, status: :not_found
   end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Reservation < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :block_time
   belongs_to :work_day
   belongs_to :worker
@@ -24,6 +24,14 @@ class Reservation < ApplicationRecord
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :actives, -> { where('day > ?', Time.zone.now) }
 
+  def change_day_time
+    datetime_block_time = block_time.start.to_datetime
+    start_time_hour = datetime_block_time.hour
+    start_time_minutes = datetime_block_time.min
+    start_time_seconds = datetime_block_time.second
+    self.day = self.day.change({ hour: start_time_hour, min: start_time_minutes, sec: start_time_seconds })
+    save unless self.new_record?
+  end
   #after_create :send_email
 
   #def send_email

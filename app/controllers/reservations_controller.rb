@@ -5,7 +5,7 @@ class ReservationsController < ApiController
 
   # GET /reservations or /reservations.json
   def index
-    @reservations = Reservation.actives.limit(params[:limit]).offset(params[:offset])
+    @reservations = Reservation.limit(params[:limit]).offset(params[:offset])
     render json: @reservations, status: :ok
   end
 
@@ -14,10 +14,18 @@ class ReservationsController < ApiController
     render json: @reservation, status: :ok
   end
 
+  # GET /reservations/1 or /reservations/1.json
+  def by_user
+    @reservations = Reservation.where(email: by_user_params[:email]).order(day: :desc)
+    now = Time.now
+    @old_reservations = @reservations.where("reservations.day < ?", now)
+    @current_reservations = @reservations.where("reservations.day >= ? ", now).order(day: :desc).sort_by(&:day)
+  end
+
   # POST /reservations or /reservations.json
   def create
     @reservation = Reservation.new(reservation_params)
-    #@reservation.validate
+    @reservation.change_day_time
     if @reservation.save
       render json: @reservation, status: :created
     else
@@ -27,13 +35,11 @@ class ReservationsController < ApiController
 
   # PATCH/PUT /reservations/1 or /reservations/1.json
   def update
-    respond_to do |format|
-      @reservation.validate
-      if @reservation.update(reservation_params)
-        render json: @reservation, status: :created
-      else
-        render json: @reservation.errors, status: :unprocessable_entity
-      end
+    if @reservation.update(reservation_params)
+      @reservation.reload.change_day_time
+      render json: @reservation, status: :created
+    else
+      render json: @reservation.errors, status: :unprocessable_entity
     end
   end
 
@@ -54,6 +60,10 @@ class ReservationsController < ApiController
   def reservation_params
     params.require(:reservation).permit(:firstname, :lastname, :phone, :day, :rut, :email,
                                         :block_time_id, :user_id, :work_day_id, :worker_id, :service_id)
+  end
+
+  def by_user_params
+    params.permit(:user_id, :email)
   end
 
 end
