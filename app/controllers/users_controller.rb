@@ -26,7 +26,21 @@ class UsersController < ApiController
 
   # PUT /users/{id}
   def update
-    unless @user.update(user_params)
+    if @user.update(update_user_params)
+      render json: @user, status: :ok
+    else
+      render json: { errors: @user.errors.full_messages },
+             status: :unprocessable_entity
+    end
+  end
+
+  def reset_password
+    friendly_password = SecureRandom.hex(3)
+    @user.password = friendly_password
+    @user.password_confirmation = friendly_password
+    if @user.save
+      render json: {new_password: friendly_password}, status: :ok
+    else
       render json: { errors: @user.errors.full_messages },
              status: :unprocessable_entity
     end
@@ -45,9 +59,15 @@ class UsersController < ApiController
       render json: { errors: 'User not found' }, status: :not_found
   end
 
-  def user_params
+  def update_user_params
     params.permit(
       :avatar, :name, :username, :email, :password, :password_confirmation, :phone
+    )
+  end
+
+  def user_params
+    params.permit(
+      :id, :avatar, :name, :username, :email, :password, :password_confirmation, :phone
     )
   end
 end
