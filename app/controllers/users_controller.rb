@@ -38,11 +38,17 @@ class UsersController < ApiController
     friendly_password = SecureRandom.hex(3)
     @user.password = friendly_password
     @user.password_confirmation = friendly_password
-    if @user.save
-      render json: {new_password: friendly_password}, status: :ok
+    if @user.email.nil?
+      render json: { errors: "El correo del usuario no puede estar en blanco!" },
+               status: :unprocessable_entity
     else
-      render json: { errors: @user.errors.full_messages },
-             status: :unprocessable_entity
+      if @user.save
+        UserMailer.with(user: @user, friendly_password: friendly_password).reset_password.deliver_now
+        render json: {message: "Contraseña nueva creada!"}, status: :ok
+      else
+        render json: { errors: @user.errors.full_messages },
+               status: :unprocessable_entity
+      end
     end
   end
 
