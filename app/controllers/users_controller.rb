@@ -1,5 +1,5 @@
 class UsersController < ApiController
-  before_action :authorize_request, except: :create
+  before_action :authorize_request, except: [:create, :reset_password]
   before_action :find_user, except: %i[create index reset_password]
 
   # GET /users
