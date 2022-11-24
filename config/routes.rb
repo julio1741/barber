@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   resources :services
 
   resources :users do
-    member do
+    collection do
       post 'reset_password', action: :reset_password, as: :reset_password
     end
   end

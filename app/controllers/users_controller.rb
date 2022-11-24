@@ -1,6 +1,6 @@
 class UsersController < ApiController
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index]
+  before_action :find_user, except: %i[create index reset_password]
 
   # GET /users
   def index
@@ -35,6 +35,7 @@ class UsersController < ApiController
   end
 
   def reset_password
+    @user = User.find_by!(email: params[:email])
     friendly_password = SecureRandom.hex(3)
     @user.password = friendly_password
     @user.password_confirmation = friendly_password
