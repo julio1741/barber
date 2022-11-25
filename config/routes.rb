@@ -20,7 +20,11 @@ Rails.application.routes.draw do
   resources :work_days, only: [:create, :index, :update, :destroy, :show]
   resources :services
 
-  resources :users
+  resources :users do
+    collection do
+      post 'reset_password', action: :reset_password, as: :reset_password
+    end
+  end
   post '/auth/login', to: 'authentication#login'
   get '/*a', to: 'api#not_found'
 

@@ -45,8 +45,17 @@ class ReservationsController < ApiController
 
   # DELETE /reservations/1 or /reservations/1.json
   def destroy
-    @reservation.destroy
-    render json: { }
+    email = @reservation.user.try(:email) || @reservation.try(:email)
+    if email
+      if @reservation.destroy
+        ReservationMailer.with(reservation: @reservation).cancel.deliver_now
+        render json: { reservation_id: @reservation.id, message:"Borrada con éxito!" }, status: :ok
+      else
+        render json: @reservation.errors, status: :unprocessable_entity
+      end
+    else
+      render json: {error: "Reserva y usuario no tienen correo asociado"}, status: :unprocessable_entity
+    end
   end
 
   private

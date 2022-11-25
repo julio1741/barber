@@ -32,9 +32,9 @@ class Reservation < ApplicationRecord
     self.day = self.day.change({ hour: start_time_hour, min: start_time_minutes, sec: start_time_seconds })
     save unless self.new_record?
   end
-  #after_create :send_email
+  after_create :send_email
 
-  #def send_email
-    #ReservationMailer.with(reservation: self).success.deliver_now
-  #end
+  def send_email
+    ReservationMailer.with(reservation: self).success.deliver_now
+  end
 end

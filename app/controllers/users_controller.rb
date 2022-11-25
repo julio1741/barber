@@ -1,6 +1,6 @@
 class UsersController < ApiController
-  before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index]
+  before_action :authorize_request, except: [:create, :reset_password]
+  before_action :find_user, except: %i[create index reset_password]
 
   # GET /users
   def index
@@ -26,9 +26,30 @@ class UsersController < ApiController
 
   # PUT /users/{id}
   def update
-    unless @user.update(user_params)
+    if @user.update(update_user_params)
+      render json: @user, status: :ok
+    else
       render json: { errors: @user.errors.full_messages },
              status: :unprocessable_entity
+    end
+  end
+
+  def reset_password
+    @user = User.find_by!(email: params[:email])
+    friendly_password = SecureRandom.hex(3)
+    @user.password = friendly_password
+    @user.password_confirmation = friendly_password
+    if @user.email.nil?
+      render json: { errors: "El correo del usuario no puede estar en blanco!" },
+               status: :unprocessable_entity
+    else
+      if @user.save
+        UserMailer.with(user: @user, friendly_password: friendly_password).reset_password.deliver_now
+        render json: {message: "Contraseña nueva creada!"}, status: :ok
+      else
+        render json: { errors: @user.errors.full_messages },
+               status: :unprocessable_entity
+      end
     end
   end
 
@@ -45,9 +66,15 @@ class UsersController < ApiController
       render json: { errors: 'User not found' }, status: :not_found
   end
 
-  def user_params
+  def update_user_params
     params.permit(
       :avatar, :name, :username, :email, :password, :password_confirmation, :phone
+    )
+  end
+
+  def user_params
+    params.permit(
+      :id, :avatar, :name, :username, :email, :password, :password_confirmation, :phone
     )
   end
 end
