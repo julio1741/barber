@@ -10,6 +10,9 @@ class OrganizationsController < ApiController
   # GET /organizations/1
   # GET /organizations/1.json
   def show
+    if @organization.nil?
+      render json: {message: "Organization not found"}, status: :unprocessable_entity
+    end
   end
 
   # POST /organizations
@@ -43,7 +46,8 @@ class OrganizationsController < ApiController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_organization
-      @organization = Organization.find(params[:id])
+      @organization = Organization.find_by(id: params[:id])
+      @organization = Organization.find_by(nid: params[:id]) if @organization.nil?
     end
 
     # Only allow a list of trusted parameters through.
