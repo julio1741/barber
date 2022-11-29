@@ -1,10 +1,11 @@
 class ServicesController < ApiController
   before_action :set_service, only: %i[ show update destroy ]
+  before_action :set_organization_by_nid
 
   # GET /services
   def index
     @services = Service.limit(params[:limit]).offset(params[:offset])
-
+    @services = @services.organization_id(@organization.id) if @organization.present?
     render json: @services
   end
 

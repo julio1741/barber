@@ -33,4 +33,9 @@ class ApiController < ActionController::API
     worker.work_days.find_by(name: day)
   end
 
+  def set_organization_by_nid
+    if params[:organization_nid].present?
+      @organization = Organization.find_by(nid: params[:organization_nid])
+    end
+  end
 end
