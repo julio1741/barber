@@ -1,5 +1,6 @@
 class Worker < ApplicationRecord
-	has_many :working_days, dependent: :destroy
+  include Organizationable
+  has_many :working_days, dependent: :destroy
   has_many :work_days, through: :working_days
   accepts_nested_attributes_for :working_days
 

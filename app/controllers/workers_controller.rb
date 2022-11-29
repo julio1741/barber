@@ -53,7 +53,7 @@ class WorkersController < ApiController
 
   def worker_params
     params.permit(
-      :id, :name, :instagram, :image_url
+      :id, :name, :instagram, :image_url, :organization_id
     )
   end
 end

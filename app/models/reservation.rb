@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Reservation < ApplicationRecord
+  include Organizationable
   belongs_to :user, optional: true
   belongs_to :block_time
   belongs_to :work_day

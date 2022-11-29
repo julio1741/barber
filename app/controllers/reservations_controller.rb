@@ -2,6 +2,7 @@
 
 class ReservationsController < ApiController
   before_action :set_reservation, only: %i[show update destroy]
+  before_action :authorize_request
 
   # GET /reservations or /reservations.json
   def index
@@ -68,7 +69,7 @@ class ReservationsController < ApiController
   # Only allow a list of trusted parameters through.
   def reservation_params
     params.require(:reservation).permit(:firstname, :lastname, :phone, :day, :rut, :email,
-                                        :block_time_id, :user_id, :work_day_id, :worker_id, :service_id)
+                                        :block_time_id, :user_id, :work_day_id, :worker_id, :service_id, :organization_id)
   end
 
   def by_user_params

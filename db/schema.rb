@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_25_192826) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_29_150729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -70,7 +70,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_192826) do
     t.bigint "block_time_id", null: false
     t.bigint "worker_id", null: false
     t.bigint "service_id", null: false
+    t.bigint "organization_id", null: false
     t.index ["block_time_id"], name: "index_reservations_on_block_time_id"
+    t.index ["organization_id"], name: "index_reservations_on_organization_id"
     t.index ["service_id"], name: "index_reservations_on_service_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
     t.index ["work_day_id"], name: "index_reservations_on_work_day_id"
@@ -83,6 +85,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_192826) do
     t.integer "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "organization_id", null: false
+    t.index ["organization_id"], name: "index_services_on_organization_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,6 +97,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_192826) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "phone"
+    t.bigint "organization_id", null: false
+    t.index ["organization_id"], name: "index_users_on_organization_id"
   end
 
   create_table "work_days", force: :cascade do |t|
@@ -110,6 +116,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_192826) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.string "phone"
+    t.bigint "organization_id", null: false
+    t.index ["organization_id"], name: "index_workers_on_organization_id"
   end
 
   create_table "working_days", force: :cascade do |t|
@@ -131,10 +139,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_25_192826) do
   end
 
   add_foreign_key "reservations", "block_times"
+  add_foreign_key "reservations", "organizations"
   add_foreign_key "reservations", "services"
   add_foreign_key "reservations", "users"
   add_foreign_key "reservations", "work_days"
   add_foreign_key "reservations", "workers"
+  add_foreign_key "services", "organizations"
+  add_foreign_key "users", "organizations"
+  add_foreign_key "workers", "organizations"
   add_foreign_key "working_days", "work_days"
   add_foreign_key "working_days", "workers"
   add_foreign_key "working_hours", "block_times"

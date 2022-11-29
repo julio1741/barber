@@ -68,13 +68,13 @@ class UsersController < ApiController
 
   def update_user_params
     params.permit(
-      :avatar, :name, :username, :email, :password, :password_confirmation, :phone
+      :avatar, :name, :username, :email, :password, :password_confirmation, :phone, :organization_id
     )
   end
 
   def user_params
     params.permit(
-      :id, :avatar, :name, :username, :email, :password, :password_confirmation, :phone
+      :id, :avatar, :name, :username, :email, :password, :password_confirmation, :phone, :organization_id
     )
   end
 end

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Organizationable
   has_secure_password
   #mount_uploader :avatar, AvatarUploader
   validates :email, uniqueness: true
