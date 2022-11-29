@@ -1,12 +1,10 @@
 class UsersController < ApiController
   before_action :authorize_request, except: [:create, :reset_password]
   before_action :find_user, except: %i[create index reset_password]
-  before_action :set_organization_by_nid
 
   # GET /users
   def index
     @users = User.limit(params[:limit]).offset(params[:offset])
-    @users = @users.organization_id(@organization.id) if @organization.present?
     render json: @users, status: :ok
   end
 

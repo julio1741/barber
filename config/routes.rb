@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :workers, only: [:create, :index, :update, :destroy, :show] do
     collection do
       post 'available_hours', action: :available_hours, as: :available_hours
+      post 'by_org_nid', action: :by_org_nid, as: :by_org_nid
     end
   end
   resources :reservations, only: [:create, :index, :update, :destroy, :show] do
@@ -19,7 +20,11 @@ Rails.application.routes.draw do
   end
   resources :block_times, only: [:create, :index, :update, :destroy, :show]
   resources :work_days, only: [:create, :index, :update, :destroy, :show]
-  resources :services
+  resources :services do
+    collection do
+      post 'by_org_nid', action: :by_org_nid, as: :by_org_nid
+    end
+  end
 
   resources :users do
     collection do

@@ -3,12 +3,10 @@
 class ReservationsController < ApiController
   before_action :set_reservation, only: %i[show update destroy]
   before_action :authorize_request
-  before_action :set_organization_by_nid
 
   # GET /reservations or /reservations.json
   def index
     @reservations = Reservation.limit(params[:limit]).offset(params[:offset])
-    @reservations = @reservations.organization_id(@organization.id) if @organization.present?
     render json: @reservations, status: :ok
   end
 

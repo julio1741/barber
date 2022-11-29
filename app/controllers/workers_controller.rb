@@ -1,13 +1,18 @@
 class WorkersController < ApiController
 
-  before_action :find_worker, except: %i[create index]
-  before_action :set_organization_by_nid
+  before_action :find_worker, except: %i[create index by_org_nid]
 
   # GET /workers
   def index
     @workers = Worker.limit(params[:limit]).offset(params[:offset])
-    @workers = @workers.organization_id(@organization.id) if @organization.present?
     render json: @workers, status: :ok
+  end
+
+  def by_org_nid
+    nid = params[:nid]
+    @organization = Organization.find_by(nid: nid)
+    @services = Worker.organization_id(@organization.id)
+    render json: @services
   end
 
   # GET /workers/{id}
