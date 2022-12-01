@@ -2,7 +2,7 @@ class User < ApplicationRecord
   include Organizationable
   has_secure_password
   #mount_uploader :avatar, AvatarUploader
-  validates :email, uniqueness: true
+  validates :email, uniqueness: { scope: :organization }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password,
             length: { minimum: 6 },
