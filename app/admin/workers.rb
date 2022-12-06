@@ -5,7 +5,7 @@ ActiveAdmin.register Worker do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  permit_params :name, :instagram, :image_url, :description, :phone
+  permit_params :name, :instagram, :photo_url, :description, :phone
   #
   # or
   #
@@ -19,7 +19,7 @@ ActiveAdmin.register Worker do
     f.inputs 'Doctor information' do
       f.input :name
       f.input :instagram
-      f.input :image_url
+      f.input :photo_url
       f.input :description
       f.input :phone
       f.input :work_days, as: :check_boxes
