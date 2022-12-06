@@ -52,6 +52,6 @@ class ServicesController < ApiController
 
     # Only allow a list of trusted parameters through.
     def service_params
-      params.require(:service).permit(:name, :description, :price, :organization_id)
+      params.require(:service).permit(:name, :description, :price, :organization_id, :photo_url)
     end
 end
