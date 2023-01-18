@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :work_days, only: [:create, :index, :update, :destroy, :show]
   resources :services do
     collection do
-      post 'by_org_nid', action: :by_org_nid, as: :by_org_nid
+      get 'by_org_nid', action: :by_org_nid, as: :by_org_nid
     end
   end
 
