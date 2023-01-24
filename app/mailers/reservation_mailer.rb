@@ -10,7 +10,7 @@ class ReservationMailer < ApplicationMailer
     @work_day = @reservation.work_day
     @block_time = @reservation.block_time
     app_host = ENV.fetch('APP_HOST', nil)
-    mail(to: @user.email, subject: 'Gracias por reservar!')
+    mail(to: (@user.try(:email) || @reservation.email), subject: 'Gracias por reservar!')
   end
 
   def cancel

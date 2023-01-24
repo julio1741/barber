@@ -30,7 +30,7 @@ class ReservationsController < ApiController
     if @reservation.save
       render json: @reservation, status: :created
     else
-      render json: @reservation.errors, status: :unprocessable_entity
+      render json: @reservation.errors.full_messages, status: :unprocessable_entity
     end
   end
 

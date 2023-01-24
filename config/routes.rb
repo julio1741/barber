@@ -19,10 +19,15 @@ Rails.application.routes.draw do
     end
   end
   resources :block_times, only: [:create, :index, :update, :destroy, :show]
-  resources :work_days, only: [:create, :index, :update, :destroy, :show]
-  resources :services do
+  resources :work_days, only: [:create, :index, :update, :destroy, :show] do
     collection do
       get 'by_org_nid', action: :by_org_nid, as: :by_org_nid
+    end
+  end
+
+  resources :services do
+    collection do
+      post 'by_org_nid', action: :by_org_nid, as: :by_org_nid
     end
   end
 
