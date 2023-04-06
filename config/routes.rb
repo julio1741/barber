@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :branches
+  resources :branches do
+    collection do
+      post 'by_org_nid', action: :by_org_nid, as: :by_org_nid
+    end
+  end
   resources :organizations
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

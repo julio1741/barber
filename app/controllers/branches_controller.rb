@@ -7,6 +7,13 @@ class BranchesController < ApiController
     @branches = Branch.all
   end
 
+  def by_org_nid
+    nid = params[:nid]
+    @organization = Organization.find_by(nid: nid)
+    @services = Branch.organization_id(@organization.id)
+    render json: @services
+  end
+
   # GET /branches/1
   # GET /branches/1.json
   def show
